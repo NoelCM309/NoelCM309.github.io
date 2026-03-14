@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Store Track | Documentación</title>
+
+<style>
+* {margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI',sans-serif;}
+body {background:#ffffff; color:#071426; overflow-x:hidden; position: relative;}
+
+/* PARTICULAS */
+canvas#bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+}
+
+/* HEADER */
+header {position: fixed; width: 100%; top:0; left:0; padding:15px 8%; display:flex; justify-content:space-between; align-items:center; backdrop-filter: blur(15px); background: rgba(255,255,255,0.95); border-bottom:1px solid rgba(0,0,0,0.1); z-index:1000;}
+.logo {display:flex; align-items:center; gap:15px;}
+.logo img {width:140px; height:auto; object-fit:contain; transition: transform 0.3s, filter 0.3s; filter: brightness(1.2);}
+.logo img:hover {transform: scale(1.1);}
+.logo-text h1{font-size:24px; font-weight:700; color:#071426;}
+.logo-text span{font-size:14px; color:#555;}
+nav ul{list-style:none; display:flex; gap:25px;}
+nav ul li{cursor:pointer; font-weight:500; transition:0.3s;}
+nav ul li:hover{color:#00d9f5;}
+
+.content{
+    padding:150px 10% 50px 10%;
+}
+.content h2{
+    font-size:32px; 
+    color:#00d9f5; 
+    margin-bottom:20px;
+}
+.content p{
+    font-size:16px; 
+    line-height:1.6; 
+    margin-bottom:20px;
+}
+iframe{
+    width:100%;
+    height:800px;
+    border:2px solid #00d9f5;
+    border-radius:10px;
+    margin-top:10px;
+}
+
+/* Botones PDF */
+button.pdfBtn{
+    padding:12px 25px; 
+    border:none; 
+    border-radius:25px; 
+    background:#00d9f5; 
+    color:#fff; 
+    cursor:pointer; 
+    font-weight:600; 
+    margin-bottom:20px;
+    margin-right:10px;
+    transition:0.3s;
+}
+button.pdfBtn:hover{
+    background:#00a6c9;
+    transform:scale(1.05);
+}
+
+/* FOOTER */
+footer{text-align:center; padding:40px; background:#fff; color:#071426;}
+footer a{color:#00d9f5; text-decoration:none; font-weight:600;}
+footer a:hover{text-decoration:underline;}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+    .logo img{width:120px;} 
+    nav ul{flex-wrap:wrap; gap:15px;}
+    iframe{height:600px;}
+}
+</style>
+</head>
+<body>
+
+<!-- PARTICULAS -->
+<canvas id="bg"></canvas>
+
+<header>
+    <div class="logo">
+        <img src="Logo.png" alt="Store Track Logo">
+        <div class="logo-text">
+            <h1>Store Track</h1>
+            <span>Inventario para todos</span>
+        </div>
+    </div>
+    <nav>
+        <ul>
+            <li onclick="window.location='noel.html#inicio'">Inicio</li>
+            <li onclick="window.location='noel.html#sobre'">Sobre Nosotros</li>
+            <li onclick="window.location='noel.html#valores'">Valores</li>
+            <li onclick="window.location='noel.html#contacto'">Contacto</li>
+            <li onclick="window.location='noel.html'">Volver al Inicio</li>
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>Documentación del Proyecto Store Track</h2>
+    <p>Pulsa los botones para abrir los PDFs dentro del recuadro. También puedes descargarlos si tu navegador no soporta visualizar PDFs.</p>
+
+    <!-- Botones para cargar PDFs -->
+    <button class="pdfBtn" id="btnCarta">Abrir Carta de Usuario</button>
+    <button class="pdfBtn" id="btnCanvas">Abrir Canvas</button>
+
+    <!-- PDF incrustado -->
+    <iframe id="iframePDF" 
+        src="" 
+        title="Documentación Store Track">
+        Tu navegador no soporta visualizar PDFs. 
+        <a href="documentos/Carta de Usuario Store Track.pdf" target="_blank">Descargar PDF</a>
+    </iframe>
+</div>
+
+<footer>
+    © 2026 Store Track | Todos los derechos reservados <br>
+    <p>Email: <a href="mailto:strackstore77@gmail.com">strackstore77@gmail.com</a> | Tel: +52 729 262 0524</p>
+</footer>
+
+<script>
+// PARTICULAS
+const canvas = document.getElementById("bg");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+});
+
+let particles = [];
+for(let i=0;i<120;i++){
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*3+1,
+        dx: (Math.random()-0.5)*0.7,
+        dy: (Math.random()-0.5)*0.7
+    });
+}
+
+function animate() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+        ctx.fillStyle = "rgba(0,217,245,0.7)";
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if(p.x < 0 || p.x > canvas.width) p.dx *= -1;
+        if(p.y < 0 || p.y > canvas.height) p.dy *= -1;
+    });
+    requestAnimationFrame(animate);
+}
+animate();
+
+// Botones para cargar PDFs dentro del iframe
+document.getElementById("btnCarta").addEventListener("click", function() {
+    document.getElementById("iframePDF").src = "cartaU.pdf";
+});
+document.getElementById("btnCanvas").addEventListener("click", function() {
+    document.getElementById("iframePDF").src = "canvas.pdf";
+});
+</script>
+
+</body>
+</html>
